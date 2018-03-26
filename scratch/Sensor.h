@@ -10,7 +10,7 @@ Calling port(DDR,D) would concatenate DDR and the letter D to create DDRD
 This makes our code more portable and reader friendly
 as we only have to change the letter in the H file and it is changed everywhere else
 */
-#define concat(type, letter) type##letter 
+#define concat(type, letter) type##letter
 #define port(type,letter) concat (type,letter)
 
 //Defining the values for the control reg
@@ -23,15 +23,15 @@ as we only have to change the letter in the H file and it is changed everywhere 
 //ENABLE external interrupt
 #define EIMSK_config  0x03;
 
-// interrupt to be fired 	
+// interrupt to be fired
 // DETECING BOTH RISING EDGE AND FALLING EDGE OF INT0 AND INTB
 #define EICRA_config  0x05;
 
-#define SENSOR_trig_port C
-#define SENSOR_0_trig	 5
-#define SENSOR_1_trig	 4
-#define SENSOR_0_out	 0
-#define SENSOR_1_out	 1
+#define SENSOR_trig_port    C
+#define SENSOR_Left_trig	5
+#define SENSOR_Right_trig	4
+// #define SENSOR_Left_out	    0
+// #define SENSOR_Right_out    1
 
 void init_sensor();
 void get_distance(uint8_t sensor);
