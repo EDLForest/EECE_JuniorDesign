@@ -64,28 +64,3 @@ void find_distance(uint8_t trigger_port_num){
 	*	and compute the distance.
 	*/
 }
-
-// int main() {
-//
-//   init_sensor();
-//
-//   while(1) {
-// 	find_distance(SENSOR_0_trig);
-// 	find_distance(SENSOR_1_trig);
-//
-// 	if (distance < 10){
-// 		PORTC |= (1 << SENSOR_0_out);
-// 	}else{
-// 		PORTC &= ~(1 << SENSOR_0_out);
-// 	}
-//
-// 	if (distance2 < 10){
-// 		PORTC |= (1 << SENSOR_1_out);
-// 	}else{
-// 		PORTC &= ~(1 << SENSOR_1_out);
-// 	}
-//   }
-//
-//   return 0;
-//
-// }

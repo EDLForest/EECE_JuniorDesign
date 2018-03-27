@@ -8,23 +8,12 @@
 #include "PWM.h"
 
 
-/*initialize the PORTs dedicated to the motors.
-You always have to call this in main to intialize the PORT I/O
-*/
 void init_motors (){
-    //The output port are determined in the PWM module
+    //The output port are set in the PWM module
+    //so 
     break();
-    // port(DDR,leftmotorport)  |= ((1<<leftmotora) | (1<<leftmotorb));
-    // port(DDR,rightmotorport) |= ((1<<rightmotora) | (1<<rightmotorb));
-
-	// //DDRB &= (~(1<<5) & ~(1<<4))
-    // port(DDR,leftquadport) &= (~(1<<leftquada) & ~(1<<leftquadb));
-    //
-	// //DDRD &= (~(1<<1) & ~(1<<4))
-    // port(DDR,rightquadport) &= (~(1<<rightquada) & ~(1<<rightquadb));
 
 }
-
 
 void rightmotor_reverse(uint8_t speed){
     A1_setPWM(0xFF - speed);
@@ -65,17 +54,6 @@ void leftmotor_coast(){
     B1_setPWM(0x00);
     B2_setPWM(0x00);
 }
-
-// uint8_t leftquad_value(){
-//     return ((port(PIN,leftquadport)));
-//
-// }
-//
-//  uint8_t rightquad_value(){
-//     return ((port(PIN,rightquadport)));
-//
-// }
-
 
 void brake(){
     leftmotor_brake();

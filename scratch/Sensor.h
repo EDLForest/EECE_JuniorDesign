@@ -30,8 +30,6 @@ as we only have to change the letter in the H file and it is changed everywhere 
 #define SENSOR_trig_port    C
 #define SENSOR_Left_trig	5
 #define SENSOR_Right_trig	4
-// #define SENSOR_Left_out	    0
-// #define SENSOR_Right_out    1
 
 void init_sensor();
 void get_distance(uint8_t sensor);
