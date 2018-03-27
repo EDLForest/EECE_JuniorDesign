@@ -1,17 +1,11 @@
-/**
-* Driver functions for the DAGU Rover 5
-* Created by Haosen Zheng 2018
-* For Atmega328 micro processor
-* Include  motor.h in your main.c file and you can call these functions
-*/
 #include "motor.h"
 #include "PWM.h"
 
-
 void init_motors (){
     //The output port are set in the PWM module
-    //so 
-    break();
+    //so to initialize, just call init_PWM
+	init_PWM();
+    brake();
 
 }
 
@@ -35,12 +29,12 @@ void leftmotor_brake(){
     B2_setPWM(0xFF);
 }
 
-void rightmotor_foward(uint8_t speed){
+void rightmotor_forward(uint8_t speed){
     A1_setPWM(0xFF);
     A2_setPWM(0xFF - speed);
 }
 
-void leftmotor_foward(uint8_t speed){
+void leftmotor_forward(uint8_t speed){
     B1_setPWM(0xFF);
     B2_setPWM(0xFF - speed);
 }

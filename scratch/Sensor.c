@@ -15,16 +15,16 @@ uint8_t flags;
 // AFTER THE FALLING EDGE, WE CALCULATE THE DISTANCE
 ISR(INT0_vect){
 	if(flags & (1 << SENSOR_Left_trig)) { TCNT1 = 0; }
-	else  {	distanceLft = (TCNT1)/ 58;	}
+	else  {	distanceLeft = (TCNT1)/ 58;	}
 
 	flags &= ~(1 << SENSOR_Right_trig);
 }
 
 ISR(INT1_vect){
-	if(flags & (1 << SENSOR_1_trig)) { TCNT1 = 0; }
+	if(flags & (1 << SENSOR_Right_trig)) { TCNT1 = 0; }
 	else { distanceRight = (TCNT1)/ 58; }
 
-	flags &= ~(1 << SENSOR_1_trig);
+	flags &= ~(1 << SENSOR_Right_trig);
 }
 
 void init_sensor(){
@@ -43,7 +43,7 @@ void init_sensor(){
 }
 
 void find_distance(uint8_t trigger_port_num){
-	flags |= (1 << sensor_num);
+	flags |= (1 << trigger_port_num);
 
 	//DISABLE external interrupt
 	EIMSK  = 0x00;
