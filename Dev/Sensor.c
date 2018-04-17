@@ -3,12 +3,36 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "Sensor.h"
+#include "externalVar.h"
 
 //Global Volatile variables that can be changed by interrupts
 uint8_t distanceLeft = 0x00;
 uint8_t distanceRight = 0x00;
+
 uint8_t flags = 0x00;
-uint16_t Sensor_value=0x0000;
+
+/* int main(){
+	
+	init_sensor();
+	
+	while(1){
+		find_distance_Left();
+		find_distance_Right();
+		
+		if(distanceLeft < 10)
+			PORTC |= (1<<PC1);
+		else
+			PORTC &= ~(1<<PC1);
+		
+		if(distanceRight < 10)
+			PORTC |= (1<<PC0);
+		else
+			PORTC &= ~(1<<PC0);
+		
+	}
+	
+	return 0;
+} */
 
 // DETECTS BOTH RISING EDGE AND FALLING EDGE OF INT0
 // ON THE RISING EDGE, WE START THE COUNTER,
@@ -16,8 +40,7 @@ uint16_t Sensor_value=0x0000;
 // AFTER THE FALLING EDGE, WE CALCULATE THE DISTANCE
 ISR(INT0_vect){
 	if(flags & (1 << SENSOR_Left_trig)) { TCNT1 = 0; }
-	else  {	Sensor_value = TCNT1;
-	/* distanceLeft = (TCNT1)/ 58;  */}
+	else  {	distanceLeft = (TCNT1)/ 58; }
 
 	flags &= ~(1 << SENSOR_Left_trig);
 	
@@ -27,8 +50,7 @@ ISR(INT0_vect){
 
 ISR(PCINT2_vect){
 	if(flags & (1 << SENSOR_Right_trig)) { TCNT1 = 0; }
-	else { Sensor_value = TCNT1;
-	/* distanceRight = (TCNT1)/ 58; */ }
+	else { distanceRight = (TCNT1)/ 58; }
 
 	flags &= ~(1 << SENSOR_Right_trig);
 }
@@ -52,10 +74,10 @@ void init_sensor(){
 	sei();
 }
 //use INT0
-bool find_distance_Left(uint16_t threshold){
+uint8_t find_distance_Left(){
 	flags |= (1 << SENSOR_Left_trig);
-	threshold = 58 * threshold;
 	
+
 	//DISABLE external interrupt
 	EIMSK  = 0x00;
 
@@ -74,13 +96,13 @@ bool find_distance_Left(uint16_t threshold){
 	*	The counter, second time to read the value of the counter
 	*	and compute the distance.
 	*/
-	return Sensor_value <= threshold;
+	return distanceLeft;
 }
 
 //Use PCINT17
-bool find_distance_Right(uint16_t threshold){
+uint8_t find_distance_Right(){
 	flags |= (1 << SENSOR_Right_trig);
-	threshold = 58 * threshold;
+	
 
 	//DISABLE external interrupt
 	PCMSK2  = 0x00;
@@ -100,5 +122,5 @@ bool find_distance_Right(uint16_t threshold){
 	*	The counter, second time to read the value of the counter
 	*	and compute the distance.
 	*/
-	return Sensor_value < threshold;
+	return distanceRight;
 }

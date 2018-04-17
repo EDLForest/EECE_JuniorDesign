@@ -3,7 +3,6 @@
 
 #include <avr/io.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include <util/delay.h>
 
 /*Defining a concatenate function which will make our code more readable
@@ -36,6 +35,6 @@ as we only have to change the letter in the H file and it is changed everywhere 
 #define SENSOR_Right_trig	4
 
 void init_sensor();
-bool find_distance_Left(uint16_t threshold);
-bool find_distance_Right(uint16_t threshold);
+uint8_t find_distance_Left();
+uint8_t find_distance_Right();
 #endif

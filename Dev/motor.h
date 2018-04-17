@@ -23,10 +23,6 @@ void rightmotor_reverse(uint8_t speed);
 void rightmotor_brake();
 void rightmotor_coast();
 
-void forward(uint8_t speed);
-void rightTurn(uint8_t speed);
-void leftTurn(uint8_t speed);
-void reverse(uint8_t speed);
 void brake();
 
 

@@ -8,7 +8,7 @@
 #define SENSOR1		1
 #define SENSOR2		2
 
-uint16_t distance0, distance1, distance2;
+volatile uint16_t distance0, distance1, distance2;
 uint8_t flags = 0x00;
 
 // DETECTS BOTH RISING EDGE AND FALLING EDGE OF INT0

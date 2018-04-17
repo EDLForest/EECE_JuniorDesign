@@ -3,19 +3,6 @@
 #include <stdint.h>
 #include "PWM.h"
 
-int main (){
-
-    init_PWM();
-
-    A1_setPWM( (uint8_t)0xff );
-    A2_setPWM( (uint8_t)0x2f );
-    B1_setPWM( (uint8_t)0xff );
-    B2_setPWM( (uint8_t)0x2f );
-
-    while (1);
-    return 0;
-}
-
 void init_PWM(){
     //might need to put this into the Main.c
     //set the PORTD 3 & 5 & 6 as output

@@ -1,42 +1,51 @@
 #define F_CPU 1000000UL
 #include <avr/io.h>
 #include <stdint.h>
+#include <stdbool.h>
+#include <avr/interrupt.h>
 
 #include "Sensor.h"
 #include "motor.h"
-#include "externalVar.h"
+
 
 int main() {
 
 	init_motors();
+	init_sensor();
+	sei();
+	
+	uint8_t side_threshold	 = 10;
+	uint8_t front_threshold  = 10;
+	
 	while(1){
-		leftmotor_forward(0x7F);
-		rightmotor_forward(0x7F);		
+		
+		
+		bool sideDetect  = (find_distance_Left(side_threshold));
+		bool frontDetect = (find_distance_Right(front_threshold));
+		
+		if(!sideDetect && !frontDetect){
+			/* PORTC |= (1<<PC1); */
+			rightTurn(0xAF);
+		}
+		else if( !sideDetect && frontDetect){
+			/* PORTC &= ~(1<<PC1); */
+			leftTurn(0xAF);
+		}
+		else if( sideDetect && !frontDetect){
+			/* PORTC |= (1<<PC0); */
+			forward(0xAF);
+		}
+		else if (sideDetect && frontDetect){
+			leftTurn(0xAF);
+		}
+		else{
+			reverse(0xAF);
+		}
+		
+		
+					
+
 	}
-
-
-
-    //If the Right Sensor detects object and left don't, turn left
-    //If the Left Sensor detects object and right don't, turn right
-    //If both Sensors detects object, spin left/right
-    //If both Sensors did not detect anything, go forward
-    /* while(0){
-        if (distanceLeft<10 && distanceRight<10){
-            leftmotor_reverse(0x7F);
-            rightmotor_reverse(0x7F);
-        }
-        else if(dstanceLeft<10 && !(distanceRight<10) ){
-            leftmotor_foward(0x7F);
-            rightmotor_reverse(0x7F);
-        }
-        else if( !(dstanceLeft<10) && distanceRight<10 ){
-            leftmotor_reverse(0x7F);
-            rightmotor_forward(0x7F);
-        }
-        else{
-            leftmotor_forward(0x7F);
-            rightmotor_forward(0x7F);
-        }
-    } */
+	
     return 1;
 }

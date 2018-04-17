@@ -49,23 +49,6 @@ void leftmotor_coast(){
     B2_setPWM(0x00);
 }
 
-
-void forward(uint8_t speed){
-	leftmotor_forward(speed);
-	rightmotor_forward(speed);
-}
-void rightTurn(uint8_t speed){
-	leftmotor_forward(speed);
-	rightmotor_reverse(speed);
-}
-void leftTurn(uint8_t speed){
-	leftmotor_reverse(speed);
-	rightmotor_forward(speed);
-}
-void reverse(uint8_t speed){
-	leftmotor_reverse(speed);
-	rightmotor_reverse(speed);
-}
 void brake(){
     leftmotor_brake();
     rightmotor_brake();

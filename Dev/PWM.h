@@ -9,7 +9,7 @@
 //Configuration for the counters
 //Set WGM(2:0) 	= 3 Fast FWM with TOP as FF
 //Set COM0A(1:0) 	= 2 Clear OC0A on compare match, Set on BOTTOM
-//Set CS(2:0)	= 1 Use clock with no Prescaling
+//Set CS(2:0)	= 1 Use clock with no Pre-scaling
 #define TCCR0A_config 0xA3
 #define TCCR0B_config 0x01
 #define TCCR2A_config 0xA3
