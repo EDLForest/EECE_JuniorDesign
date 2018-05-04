@@ -19,16 +19,6 @@ void leftmotor_reverse(uint8_t speed){
     B2_setPWM(0xFF);
 }
 
-void rightmotor_brake(){
-    A1_setPWM(0xFF);
-    A2_setPWM(0xFF);
-}
-
-void leftmotor_brake(){
-    B1_setPWM(0xFF);
-    B2_setPWM(0xFF);
-}
-
 void rightmotor_forward(uint8_t speed){
     A1_setPWM(0xFF);
     A2_setPWM(0xFF - speed);
@@ -37,6 +27,16 @@ void rightmotor_forward(uint8_t speed){
 void leftmotor_forward(uint8_t speed){
     B1_setPWM(0xFF);
     B2_setPWM(0xFF - speed);
+}
+
+void rightmotor_brake(){
+    A1_setPWM(0xFF);
+    A2_setPWM(0xFF);
+}
+
+void leftmotor_brake(){
+    B1_setPWM(0xFF);
+    B2_setPWM(0xFF);
 }
 
 void rightmotor_coast(){

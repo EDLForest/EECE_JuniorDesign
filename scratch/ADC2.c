@@ -26,21 +26,21 @@
 
 int main(){
 
-	//Select V ref as AVcc, ADCReg is right adjusted, Channel is ADC0, 
+	//Select V ref as AVcc, ADCReg is right adjusted, Channel is ADC0,
 	ADMUX  |= ((1 << REFS0) | (1 << ADLAR));
 	//Enable ADC, set auto trigger, clk prescale: 8
 	ADCSRA |= ((1 << ADEN) | (1 << ADATE) | (1 << ADPS1) | (1 << ADPS0));
-	
+
 	//set PORTC5 as output
-	DDRC |= (1 << 5);
-	
+	DDRC |= (1 << 3);
+
 	// set PC0 as input
 	DDRC &= ~(1 << 0);
 
 	// start convertion
 	ADCSRA |= (1 << ADSC);
 
-	
+
 	ACSR |= (1 << ACBG) | (1 << ACIE);
 
 	uint8_t temp, sum = 0, counter=0;
@@ -49,27 +49,27 @@ int main(){
 	{
 		counter++;
 		temp = ADCH;
-		
+
 		//If the most significant bit of the digital signal is high
 		//increment the sum
 		if(temp & (1 << 7)){
 		   sum++;
-		}		
+		}
 
 		//at 255 samples collected
 		//If sum is more than half, then turn on the LED
 		if(counter == 255){
-		    
+
 
 
 		    if(sum & (1 << 7)){
-			PORTC |= (1 << 5);
+			PORTC |= (1 << 3);
 		    }
 		    else{
-			PORTC &= ~(1 << 5);
+			PORTC &= ~(1 << 3);
 		    }
 		   counter = 0;
-		   sum =0;	
+		   sum = 0;
 		}
 	}
 

@@ -1,9 +1,10 @@
-#ifndef __SENSOR_H__
-#define __SENSOR_H__
+#ifndef __SENSOR4_H__
+#define __SENSOR4_H__
 
 #include <avr/io.h>
 #include <stdint.h>
-#include <stdbool.h>
+// #include <stdbool.h>
+#include <avr/interrupt.h>
 #include <util/delay.h>
 
 /*Defining a concatenate function which will make our code more readable
@@ -22,20 +23,23 @@ as we only have to change the letter in the H file and it is changed everywhere 
 #define TCCR1B_config 0x01
 
 //ENABLE external interrupt
-#define EIMSK_config  0x01
-#define PCICR_config  0x04	//enable PCIE2 and PCIE1
+#define EIMSK_config  0x01	//enable INT0 and INT1
+#define PCICR_config  0x06	//enable PCIE2 and PCIE1
 #define PCMSK2_config 0x02	//enable PCINT17
-#define PCMSK1_config 0x40	//enable PCINT14
+#define PCMSK1_config 0x02	//enable PCINT09
 
 // interrupt to be fired
 // DETECING BOTH RISING EDGE AND FALLING EDGE OF INT0 AND INTB
-#define EICRA_config  0x05
-#define Start_Counter 		1
+#define EICRA_config  		0x05
 #define SENSOR_trig_port    C
-#define SENSOR_Left_trig	5
-#define SENSOR_Right_trig	4
+#define SENSOR_FRONT1		5
+// #define SENSOR_FRONT2		4
+#define SENSOR_SIDE1		4
+#define SENSOR_SIDE2		3
 
 void init_sensor();
-bool find_distance_Left(uint16_t threshold);
-bool find_distance_Right(uint16_t threshold);
+uint16_t distance_front1();
+//uint16_t distance_front2();
+uint16_t distance_side1();
+uint16_t distance_side2();
 #endif
