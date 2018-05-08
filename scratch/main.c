@@ -20,6 +20,8 @@ void rightTurn90(){
 
 int main() {
 
+    _delay_ms(4000);
+
 	DDRC |= (1 << PC2 | 1 << PC0);
     DDRB |= (1 << PB5);
 
@@ -65,11 +67,11 @@ int main() {
 
 
 		if( frontDetect >= 10*58){
-			if(sideDetect1 >= 20*58 && sideDetect2 >= 20*58){ 
+			if(sideDetect1 >= 20*58 && sideDetect2 >= 20*58){
                 		rightTurn(0x7f);
 			}
 			//if we are out in the open turn right. Can effect turns around obstacles
-			
+
             		else if( sideDetect1 - sideDetect2 > 30*58){
                			//pivot right
                 		_delay_ms(500);
@@ -78,8 +80,8 @@ int main() {
               			_delay_ms(2350);
            		}
 			//Used to get around the end of an obstacle
-			//This was our issue when using only 2 sensors 
-			//Why dont we just add this to original code? 
+			//This was our issue when using only 2 sensors
+			//Why dont we just add this to original code?
 
 			else if( (sideDetect1 - sideDetect2) > 2*58 ){
                 		//Bear right
@@ -87,7 +89,7 @@ int main() {
 				leftmotor_forward(0x7F);
 			}
 			//Side1 is farther from the wall than Side2, adjust
-			//We can either enter a loop when turn detected or 
+			//We can either enter a loop when turn detected or
 			//alter this part of code to avoid right turning in corners
 
            		else if( (sideDetect2 - sideDetect1) > 2*58 ){

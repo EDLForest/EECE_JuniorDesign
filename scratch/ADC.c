@@ -3,7 +3,6 @@
 #include <util/delay.h>
 #include <stdint.h>
 #include <avr/interrupt.h>
-#include "ADC.h"
 
 //ADMUX
 #define REFS1 7
@@ -24,23 +23,18 @@
 #define ACO 5
 #define ACIE 3
 
-void init_ADC();
-void detect_Metal();
 
-//Input: From metal detector ADC Pin 23
-//Output: To Atmega, binary signal Pin 27 (metal detected = 0, none detected = 1)
-//	      To FPGA, pulse from pin 28 (to be processed in order to increment the counter)
-//Reference Voltage = TBD, change count compare value based on chosen voltage
-uint16_t temp, sum = 0, counter=0;
-void init_ADC(){
-		//Select V ref as AVcc, ADCReg is right adjusted, Channel is ADC0,
+int main(){
+
+	_delay_ms(3000);
+
+	//Select V ref as AVcc, ADCReg is right adjusted, Channel is ADC0,
 	ADMUX  |= ((1 << REFS0) | (1 << ADLAR));
 	//Enable ADC, set auto trigger, clk prescale: 8
 	ADCSRA |= ((1 << ADEN) | (1 << ADATE) | (1 << ADPS1) | (1 << ADPS0));
 
-	//set PORTC3 as output
-
-	DDRC |= (1 << 3);
+	//set PORTC 1, 2, and 3 as output
+	DDRC |= (1 << PC4 | 1 << PC3 | 1 << PC2 | 1 << PC1);
 
 	// set PC0 as input
 	DDRC &= ~(1 << 0);
@@ -51,31 +45,72 @@ void init_ADC(){
 
 	ACSR |= (1 << ACBG) | (1 << ACIE);
 
+	uint8_t temp;
+	uint8_t sum = 0;
+	uint8_t counter = 0;
+	uint8_t MetalCount = 0;
+	uint8_t MetalDebCtr = 0;
+	uint8_t MetalCtFlag = 0;
 
-}
+	while(1)
+	{
+		counter++;
+		temp = ADCH;
 
-void detect_Metal(){
-	temp = ADCH;
+		//If the most significant bit of the digital signal is high
+		//increment the sum
+		if(temp & (1 << 7)){
+		   sum++;
+		}
 
-	//If the most significant bit of the digital signal is high
-	//increment the sum
-	while (counter < 25){
-		sum = sum + temp;
+		//at 255 samples collected
+		//If sum is more than half, then turn off the LED
+		if(counter == 255){
+
+		    if(sum & (1 << 7)){
+				PORTC &= ~(1 << PC1);
+				if(MetalCtFlag == 1){
+					MetalCtFlag = 0;
+				}
+			}
+		    else{
+				if(MetalCtFlag == 0){
+					MetalCount = MetalCount + 1;
+					MetalCtFlag = 1;
+				}
+
+				PORTC |= (1 << PC1);
+		    }
+		   counter = 0;
+		   sum = 0;
+		}
+
+		switch(MetalCount){
+			case(0):	//00
+				PORTC &= ~(1 << PC2);
+				PORTC &= ~(1 << PC3);
+				break;
+			case(1):	//01
+				PORTC |= (1 << PC2);
+				PORTC &= ~(1 << PC3);
+				break;
+			case(2):	//10
+				PORTC &= ~(1 << PC2);
+				PORTC |= (1 << PC3);
+				break;
+			case(3):	//11
+				PORTC |= (1 << PC2);
+				PORTC |= (1 << PC3);
+				break;
+			case(4):
+				PORTC |= (1 << PC4);
+				break;
+			default:
+				break;
+		}
+
 	}
 
-	//at 100 samples collected
-	//If sum is more than half, then turn on the LED
 
-
-	if(counter == 100){
-
-	    if(sum & (1 << 7)){
-			PORTC |= (1 << 3);
-		}
-		else{
-			PORTC &= ~(1 << 3);
-		}
-		   sum =0;
-		}
-	counter++;
+	return 0;
 }
